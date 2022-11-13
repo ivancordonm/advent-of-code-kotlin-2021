@@ -1,17 +1,6 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        var horizontal = 0
-        var depth = 0
-        for (line in input) {
-            val (type, value) = line.split(" ")
-            when (type) {
-                "up" -> depth -= value.toInt()
-                "down" -> depth += value.toInt()
-                "forward" -> horizontal += value.toInt()
-            }
-        }
-        return depth * horizontal
-    }
+    fun part1(input: List<String>) = input.map { it.split(' ').let { array -> Pair(array[0], array[1].toInt()) } }
+        .let { array -> (array.foldMove("down") - array.foldMove("up")) * array.foldMove("forward") }
 
     fun part2(input: List<String>): Int {
         var aim = 0
@@ -43,3 +32,6 @@ fun main() {
     println(part1(input))
     println(part2(input))
 }
+
+private fun List<Pair<String, Int>>.foldMove(direction: String) =
+    fold(0) { acc, pair -> if (pair.first == direction) acc + pair.second else acc }
