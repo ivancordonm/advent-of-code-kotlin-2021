@@ -1,29 +1,20 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        var counter = 0
-        var last = Int.MAX_VALUE
-        for (depth in input.map(String::toInt)) {
-            if (depth > last) counter++
-            last = depth
-        }
-        return counter
-    }
-
-    fun part2(input: List<String>): Int {
-        var counter = 0
-        var last = Int.MAX_VALUE
-        var sum = 0
-        for (idx in 0..input.size - 3) {
-            sum += input[idx].toInt() + input[idx + 1].toInt() + input[idx + 2].toInt()
-            if (sum > last) {
-                counter++
+    fun part1(input: List<String>) = input.map { it.toInt() }
+        .let { array ->
+            array.drop(1).foldIndexed(0) { index, acc, value ->
+                if (array[index] < value) acc + 1 else acc
             }
-            last = sum
-            sum = 0
         }
 
-        return counter
-    }
+    fun part2(input: List<String>) = input.map { it.toInt() }
+        .let { array ->
+            array.drop(3).foldIndexed(0) { index, acc, value ->
+                if (array[index] + array[index + 1] + array[index + 2]
+                    < array[index + 1] + array[index + 2] + value
+                )
+                    acc + 1 else acc
+            }
+        }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day01_test")
